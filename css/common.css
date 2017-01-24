@@ -1,0 +1,14 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+    font-size: 14px;
+    line-height: 25px;
+}
+ul,li,p,dl,dt,dd {padding: 0px;margin: 0px;}
+li {list-style: none;}
+
+
+@media (min-width:768px){
+    
+}
