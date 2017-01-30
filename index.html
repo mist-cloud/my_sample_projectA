@@ -2,38 +2,92 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>レイアウト/テスト</title>
+
+<!-- スマホ向けにviewportを追加 -->
+<meta name="viewport" content="width=device-width">
+
+<title>Flexboxでレイアウト</title>
 <style type="text/css">
-<!--    
-    .boxA:after {content: "";
+<!--
+    body,ul,li {padding: 0px; margin: 0px;}
+    li {list-style-type: none;}
+    .main-nav {
+        display: flex;
+    }
+    .main-nav li:first-child {
+        margin-right: auto;
+    }
+    .main-nav a {
+        margin: 10px;
+        border-radius: 5px;
+        background: #60B99A;
+        color: #fff;
         display: block;
-        clear: both}
-    
-    .box1 {float: left;
-        width: 33.3333%;
-        background-color: crimson}
-    .box2 {float: left;
-        width: 33.3333%;
-        background-color:blue}
-    .box3 {float: left;
-        width: 33.3333%;
-        background-color:forestgreen}
-    
-    .box4 {background-color: fuchsia}
+        padding: 15px;
+        text-decoration: none;
+    }
+    .main-nav .logo {
+        background: #4584b1;
+    }
+    .main {
+        display: flex;
+        /* align-items: center;　高さの異なる要素を垂直に中央揃え 
+        align-items: flex-end;　高さの異なる要素を下揃え
+        ↓高さの異なる要素を上揃え*/
+        align-items: baseline;
+    }
+    .main section {
+        margin: 10px;
+        border-radius:  5px;
+        background: #F5F0CF;
+        padding: 15px;
+        /* flex プロパティーは flex-grow、flex-shrink、flex-basis という3つのプロパティーのショートハンド。個別に指定することも、省略することも可能です。ここでは flex-grow の機能として、要素を利用可能な領域いっぱいに等倍で並べる指定をします。 */
+        flex: 1;
+    }
+    .main .col-2 {
+        flex: 2;
+    }
+    /* メディアクエリ　横幅が700px以下になったら */
+    @media screen and (max-width: 700px) {
+        .main {
+            /* flex-direction: row-reverse;　逆順にする */
+            /* flex-direction: column-reverse;　縦並びにし逆順にする */
+            /* flex-direction は、要素の配置方向を指定するプロパティー。デフォルト値は row で、左から右の横並びが指定されていますが、ここでは column を使って「横幅が700px以下になったら横並びから縦並びに変更する」指定をします。 */
+            flex-direction: column;
+        }
+    }
 -->
 </style>
 </head>
-<body>
     
-    <div id="wrapper">
-            <div class="box1">あああ</div>
-        <div class="boxA">
-            <div class="box2">いいい</div>
-            <div class="box3">ううう</div>
-        </div>
-            <div class="box4">えええ</div>
-    </div>
+<body>
+<nav>
+    <ul class="main-nav">
+        <li><a href="#" class="logo">Logo</a></li>
+        <li><a href="#">menu 1</a></li>
+        <li><a href="#">menu 2</a></li>
+        <li><a href="#">menu 3</a></li>
+        <li><a href="#">menu 4</a></li>
+    </ul>
+</nav>
 
+<div class="main">
+    <section class="col-1">
+        <h1>コラム１</h1>
+        <p>アレコレや様々なアレコレや様々なアレコレや様々なアレコレや様々なアレコレや様々な</p>
+    </section>
+    <section class="col-2">
+        <h1>コラム2</h1>
+        <p>アレコレや様々なアレコレ</p>
+        <p>アレコレや様々なアレコレや様々なアレコレや様々なアレコレや様々なアレコレ</p>
+        <p>アレコレや様々なアレコレや様々なアレコレや様々なアレコレや様々なアレコレ</p>
+        <p>アレコレや様々なアレコレや様々なアレコレや様々なアレコレや様々なアレコレ</p>
+    </section>
+    <section class="col-3">
+        <h1>コラム3</h1>
+        <p>アレコレや様々なアレコレや様々なアレコレや様々なアレコレや様々なアレコレや様々な</p>
+    </section>
+</div>
 </body>
     
 </html>

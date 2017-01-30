@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>レイアウト</title>
+<!--<link href="css/common.css" rel="stylesheet" type="text/css" />-->
+<style type="text/css">
+<!--
+    h1,h2,h3 {
+        font-size: 1em;
+        margin: 0px;
+        font-weight: bold;
+    }
+    p {
+        margin: 0px;
+    }
+    #wrapper {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    #wrapper section {
+        margin: 1px;
+        border-radius: 5px;
+        background: #60B99A;
+        color:#fff;
+        display: block;
+        padding: 15px;
+        text-decoration: none;
+        flex-direction: column;
+    }
+    /* flex:伸縮性設定全般
+    flex:は、'flex-grow'、'flex-shrink'、'flex-basis'のショートハンドです。flex-growはflexアイテムの伸びる倍率、flex-shrinkはflexアイテムの縮む倍率、flex-basisが個人的に最も重要だと思うベースとなる長さ、「最小の長さ」を指定出来る。autoにするとコンテンツサイズに設定される。コンテンツサイズはまちまちなのでautoにせずにpxで指定したい。*/
+    #wrapper section#s1 {flex: 300px;}
+    #wrapper section#s2 {flex: 200px;}
+    #wrapper section#s3 {flex: 200px;}
+    #wrapper section#s4 {flex: 200px;}
+    
+    @media (max-width:700px) {
+    /* ウィンドウ幅の変化でflexアイテムの順番を入れ替える */
+        #wrapper section#s1 {order: 1;}
+        #wrapper section#s2 {order: 3;}
+        #wrapper section#s3 {order: 2;}
+        #wrapper section#s4 {order: 4;}
+    }
+-->
+</style>
+</head>
+<body>
+    <header>
+        <h1>Flexboxでレイアウト</h1>
+    </header>
+    
+    <div id="wrapper">
+        <section id="s1">
+            <h2>セッション１</h2>
+            <p>css3はアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレで</p>
+        </section>
+        <section id="s2">
+            <h2>セッション２</h2>
+            <p>css3はアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレで</p>
+        </section>
+        <section id="s3">
+            <h2>セッション３</h2>
+            <p>css3はアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレで</p>
+        </section>
+        <section id="s4">
+            <h2>セッション４</h2>
+            <p>css3はアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレでアレコレで</p>
+        </section>
+    </div>
+    
+    <footer>
+        フッターです。
+    </footer>
+</body>
+    
+</html>
