@@ -1,0 +1,1 @@
+a:3:{s:5:"Apple";i:300;s:6:"Banana";i:130;s:6:"Orange";i:200;}

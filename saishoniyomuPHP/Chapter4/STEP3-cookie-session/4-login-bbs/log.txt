@@ -1,0 +1,1 @@
+a:6:{i:0;a:2:{s:4:"name";s:7:"takeshi";s:4:"body";s:24:"本日は晴天なり。";}i:1;a:2:{s:4:"name";s:7:"takeshi";s:4:"body";s:48:"本当に雲一つない秋晴れなんだよ。";}i:2;a:2:{s:4:"name";s:6:"yutaka";s:4:"body";s:15:"本当だね。";}i:3;a:2:{s:4:"name";s:6:"yutaka";s:4:"body";s:18:"素晴らしい！";}i:4;a:2:{s:4:"name";s:6:"yutaka";s:4:"body";s:21:"お腹が空いた。";}i:5;a:2:{s:4:"name";s:7:"takeshi";s:4:"body";s:27:"では食事に行こう！";}}
