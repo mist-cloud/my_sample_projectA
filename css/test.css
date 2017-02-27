@@ -1,0 +1,12 @@
+#wrapper {
+  width: 1080px;
+  margin: 0 auto;
+}
+#wrapper head {
+  background-color: aqua;
+}
+#wrapper title {
+  border-left: 3px solid aqua;
+}
+
+/*# sourceMappingURL=test.css.map */
