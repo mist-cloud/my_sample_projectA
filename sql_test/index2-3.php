@@ -2,7 +2,7 @@
 <head><title>PHP TEST／１つのデータベースから情報を持ってきて表示する</title></head>
 <body>
 <h1>PHP TEST／１つのデータベースから情報を持ってきて表示する</h1>
-<p>SQLのSELECT文「while」構文を使う</p>
+<p>SQLのSELECT文「foreach」構文を使う</p>
 <?php
 //教本ではSQLiteでtest.dbファイルを生成し保存している。
 //改造してMysqlに接続する処理。17行目まで。
@@ -19,7 +19,7 @@ try{
 
 //データを表示するテスト
 $stmt = $db->query("SELECT * FROM my_items");
-while ($row = $stmt->fetch()) {
+foreach ($stmt as $row) {
     $maker_id = $row["maker_id"];
     $item_name = $row["item_name"];
     $price = $row["price"];

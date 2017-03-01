@@ -2,6 +2,7 @@
 <head><title>PHP TEST／複数のデータベースから情報を持ってきて結合（リレーション）表示する</title></head>
 <body>
 <h1>PHP TEST／複数のデータベースから情報を持ってきて結合（リレーション）表示する</h1>
+<p>SQLのSELECT文「while」構文を使う</p>
 <?php
 //教本ではSQLiteでtest.dbファイルを生成し保存している。
 //改造してMysqlに接続する処理。17行目まで。
