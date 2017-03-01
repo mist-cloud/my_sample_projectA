@@ -3,7 +3,8 @@
 <body>
 
 <?php
-//Mysqlに接続する処理。16行目まで。
+//教本ではSQLiteでtest.dbファイルを生成し保存している。
+//改造してMysqlに接続する処理。17行目まで。
 $dsn = 'mysql:dbname=mydb;host=localhost';
 $user = 'root';
 $password = 'root';
