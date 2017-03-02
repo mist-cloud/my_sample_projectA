@@ -10,7 +10,7 @@ if(!empty($_POST['mail']) && ($_POST['naiyou']) && ($_POST['sub'])){
     $yubin=$_POST['yubin'];//郵便番号
     $subject=$_POST['sub'];//件名
     $naiyou=$_POST['naiyou'];//お問い合わせ内容
-    $mymail="256hunter@gmail.com";//【　送信先メールアドレスを指定する　】
+    $mymail="junji_yoshida@sunday-ja.com";//【　送信先メールアドレスを指定する　】
 
 //送信されたメールを読みやすいように整理する
 $naiyouall="お名前：".$name."\n性別：".$gender."\n血液型：".$blood."\n郵便番号：".$yubin."\nお問い合わせ内容：".$naiyou;
