@@ -41,7 +41,7 @@ echo <<< __FORM__
 __FORM__;
 //ログの表示
 //$select_query = "SELECT * FROM chatlog ORDER BY log_id DESC";//SELECT *(全てのカラム) FROM テーブル名　ORDER BY（並び替え） log_id順　DESC(逆の降順)
-$select_query = "SELECT * FROM chatlog ORDER BY log_id DESC LIMIT 20 OFFSET 3";//LIMIT（表示する件数）OFFSET（指定した数の件数から表示スタート）
+$select_query = "SELECT * FROM chatlog ORDER BY log_id DESC LIMIT 20 OFFSET 1";//LIMIT（表示する件数）OFFSET（指定した数の件数から表示スタート）
 $stmt = $db->query($select_query);
 foreach ($stmt as $row) {
     $name = htmlspecialchars($row["name"]);
