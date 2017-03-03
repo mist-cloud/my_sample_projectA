@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>画像をアップロード</title>
+</head>
+<body>
+あああ
+
 <?php
 //ファイルがアップロードされたか調べる
 if (isset($_FILES["upfile"])) {
@@ -45,5 +54,10 @@ function save_jpeg() {
     //アップした画像を表示する
     echo "<h1>画像ファルをアップしました！！</h1>";
     echo "<img src='test.jpeg' />";
+    echo "<div>アイウエオ</div>";
 }
 ?>
+
+いいいい
+</body>
+</html>
