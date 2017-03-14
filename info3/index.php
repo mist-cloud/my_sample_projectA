@@ -1,5 +1,4 @@
 <?php
-$script_name = $_SERVER["SCRIPT_NAME"];
 //MySQQLへの接続
 $dsn = 'mysql:dbname=TestDB;host=localhost';
 $user = 'root';
@@ -38,7 +37,6 @@ if (isset($_POST["name"]) && isset($_POST["body"]) && isset($_POST["mail"])) {
     //->アロー演算子は左辺から右辺を取り出す。
     $stmt = $db->prepare($template);//chatlogテーブルに送るSQL文の準備をしている
     $stmt->execute(array($_POST["name"],$_POST["body"],$_POST["mail"], time()));//prepareで準備、executeで配列をprepareに。
-    //header("location: $script_name");//headerよりも前にechoで表示させてはいけない。よく調べる。
     //アップロードされたファイルを保存------------------------------
     function save_jpeg() {
         //ファイルのパスを指定する
@@ -70,23 +68,21 @@ if (isset($_POST["name"]) && isset($_POST["body"]) && isset($_POST["mail"])) {
     //メールで情報を送信-----------------------------------------
     mb_language("Japanese");
     mb_internal_encoding("UTF-8");
-    $from = $_POST["mail"];//送信者
-    $to = "junji_yoshida@sunday-ja.com";//メールをもらう人。
-    $header = "From: $from\n";
-    $header .= "Reply-To: $from";
+    $from = $_POST["mail"];//フォームで記入したメルアド
+    $to = "junji_yoshida@sunday-ja.com";//フォームからメールを受け取るメルアド
+    $header = "From: $from";
+    //$header .= "Reply-To: $from";//返信先を指定する場合は必要
     $subject = $_POST["name"];
     $body = $_POST["body"];
     $r = mb_send_mail($to, $subject, $body, $header);
     if ($r) { echo "メール送信成功"; } else { echo "失敗";}
     echo "<a href='index.php'>戻る</a>";
     exit;
-    /*header("location: $script_name");
-    exit();*/
     
 }
 ?>
 <h3>DBに書き込み＆画像を所定のディレクトリに保存</h3>
-<form action="<?php echo($script_name) ?>" method="POST" enctype="multipart/form-data">
+<form action="index.php" method="POST" enctype="multipart/form-data">
 <div id="chatform">
 名前:<input type="text" name="name" size="10" />
 メール:<input type="text" name="mail" size="25" />
@@ -94,5 +90,6 @@ if (isset($_POST["name"]) && isset($_POST["body"]) && isset($_POST["mail"])) {
 ファイル：<input type="hidden" name="MAXFILE_SIZE" value="<?php echo($maxsize) ?>" />
 <input type="file"  name="upfile" />
 <input type="submit" value="書込" />
+<input type="reset" value="リセット" />
 </div>
 </form>
