@@ -40,7 +40,6 @@ if (isset($_POST["name"]) && isset($_POST["body"]) && isset($_POST["mail"])) {
     //アップロードされたファイルを保存------------------------------
     function save_jpeg() {
         //ファイルのパスを指定する
-        global $tmp_file;//ローカル変数をグローバル化している
         $tmp_file = $_FILES["upfile"]["tmp_name"];//
         $save_file = dirname(__FILE__).'/'. time() .'.jpeg';//dirname(__FILE__)で自身がいるディレクトリの絶対パスを取得。そこにtest.jpegというファイル名で保存する
         //指定ファイルがアップロードされたものかチェック
@@ -67,43 +66,22 @@ if (isset($_POST["name"]) && isset($_POST["body"]) && isset($_POST["mail"])) {
     }
     save_jpeg();
     //メールで情報を送信-----------------------------------------
-    mb_language("Japanese");//emailメッセージのエンコーディングをjapaneseに設定
-    mb_internal_encoding("UTF-8");//内部文字エンコーディングをUTF-8に設定
-    //文字コード変換
-    //$subject = mb_convert_encoding($subject,"ISO-2022-JP-MS","UTF-8");//文字エンコーディングを変換
-    //$body = mb_convert_encoding($body,"ISO-2022-JP-MS","UTF-8");//文字エンコーディングを変換
-    
-    $to = "junji_yoshida@sunday-ja.com";//フォームからメールを受け取るメルアド
-    $subject = $_POST["name"];
-    $body = "--__PHPRECIPE__\r\n";
-    $body .= "Content-Type: text/plain; charset=\"ISO-2022-JP\"\r\n";
-    $body .= "\r\n";
-    $body = $_POST["body"] . "\r\n";
-    $body .= "--__PHPRECIPE__--\r\n";
-    
-    //header
+    mb_language("Japanese");
+    mb_internal_encoding("UTF-8");
     $from = $_POST["mail"];//フォームで記入したメルアド
-    $header = "From: $from\r\n";
+    $to = "junji_yoshida@sunday-ja.com";//フォームからメールを受け取るメルアド
+    $header = "From: $from\n";
     //$header .= "Reply-To: $from";//返信先を指定する場合は必要
-    $header .= "MIME-Version: 1.0\r\n";//header部分での改行は\r\nで行う
-    $header .= "Content-Type: multipart/mixed; boundary=\"__PHPRECIPE__\"\r\n";//受信環境によっては添付ファイルが表示されない場合がある。その場合、headerから\rを全て消すと改善されるよう
+    
+    //↓添付画像を送信するための記述を追加
+    $header .= "MIME-Version: 1.0\r\n";
+    $header .= "Content-Type: multipart/mixed; boundary=\"__PHPRECIPE__\"\r\n";
     $header .= "\r\n";
+    //↑添付画像を送信するための記述を追加
     
-    //添付ファイルへの処理
-    $handle = fopen($tmp_file, 'r');
-    $attachFile = fread($handle, filesize($tmp_file));
-    fclose($handle);
-    $attachEncode = base64_decode($attachFile);
-    
-    $body .= "Content-type: image/jpeg; name=\"$file\"\r\n";
-    $body .= "Content-Transfer-Encoding: base64\r\n";
-    $body .= "Content-Disposition:attachment;filename=\"$file\"\r\n";
-    $body .= "\r\n";
-    $body .= chunk_split($attachEncode). "\r\n";
-    $body .= "--__PHPRECIPE__--\r\n";
-    
-    //mb_send_mailで送信
-    $r = mb_send_mail($to, $subject, $body, $header);//mb_send_mail(送信先,件名,本文,ヘッダ[from含む])
+    $subject = $_POST["name"];
+    $body = $_POST["body"];
+    $r = mb_send_mail($to, $subject, $body, $header);
     if ($r) { echo "メール送信成功"; } else { echo "失敗";}
     echo "<a href='index.php'>戻る</a>";
     exit;
