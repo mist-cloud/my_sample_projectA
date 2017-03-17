@@ -15,7 +15,7 @@ $success = mb_send_mail($to,$subject,$body,"From:" .$from);
 }
 ?>
 
-<form action="mb_send_mail2.php" method="post">
+<form action="mb_send_mail.php" method="post">
     <dl>
         <dt>送信先(To)</dt>
         <dd><input name="email" type="text" id="email" size="50" maxlength="255" /></dd>
@@ -26,7 +26,3 @@ $success = mb_send_mail($to,$subject,$body,"From:" .$from);
     </dl>
     <input type="submit" value="送信する" />
 </form>
-
-<?php
-
-?>
