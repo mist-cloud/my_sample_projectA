@@ -1,17 +1,18 @@
 <?php
+//日本語を使用できるように設定
 mb_language("ja");
 mb_internal_encoding("UTF-8");
 if (isset($_POST["email"])){
-$to = $_POST['email'];
-$subject = $_POST['subject'];
-$body = $_POST['message'];
-$from = mb_encode_mimeheader(mb_convert_encoding("吉田潤二","JIS","UTF8"))."<junji_yoshida@sunday-ja.com>";
-$success = mb_send_mail($to,$subject,$body,"From:" .$from);
-    if ($success) {
-    print('送信しました');
-    } else {
-    print('送信失敗');
-    }
+    $to = $_POST['email'];
+    $subject = $_POST['subject'];
+    $body = $_POST['message'];
+    $from = mb_encode_mimeheader(mb_convert_encoding("吉田潤二","JIS","UTF8"))."<junji_yoshida@sunday-ja.com>";
+    $success = mb_send_mail($to,$subject,$body,"From:" .$from);
+        if ($success) {
+        print('送信しました');
+        } else {
+        print('送信失敗');
+        }
 }
 ?>
 
