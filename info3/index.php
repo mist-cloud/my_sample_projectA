@@ -107,7 +107,6 @@ if (isset($_POST["name"]) && isset($_POST["body"]) && isset($_POST["mail"])) {
     if ($r) { echo "メール送信成功"; } else { echo "失敗";}
     echo "<a href='index.php'>戻る</a>";
     exit;
-    
 }
 ?>
 <h3>DBに書き込み＆画像を所定のディレクトリに保存</h3>
