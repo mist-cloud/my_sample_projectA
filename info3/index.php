@@ -77,27 +77,36 @@ if (isset($_POST["name"]) && isset($_POST["body"]) && isset($_POST["mail"])) {
     
     $to = "junji_yoshida@sunday-ja.com";//フォームからメールを受け取るメルアド
     $subject = $_POST["name"];//名前
-    $body = "--__PHPRECIPE__";
-    $body .= "Content-Type: text/plain; charset=\"ISO-2022-JP\"";
-    $body .= $_POST["body"] ;
-    $body .= "--__PHPRECIPE__--";
+    $file = $_FILES["upfile"];//$_FILES["upfile"]は配列情報
+    $upfile = $file["tmp_name"];//ここ重要。上記の配列情報から["tmp_name"]のみを使用。アップされたファイルが保存されているテンポラリーファイルの名前
+    
     //header
     $from = $_POST["mail"];//フォームで記入したメルアド
-    $header = "From: $from";
+    $header = "From: $from\r\n";
     //$header .= "Reply-To: $from";//返信先を指定する場合は必要
-    $header .= "MIME-Version: 1.0";//header部分での改行は\r\nで行う
-    $header .= "Content-Type: multipart/mixed; boundary=\"__PHPRECIPE__\"";//受信環境によっては添付ファイルが表示されない場合がある。その場合、headerから\rを全て消すと改善されるよう
-    //添付ファイルへの処理
-    $handle = fopen($save_file, 'r');
-    $attachFile = fread($handle, filesize($save_file));
-    fclose($handle);
-    $attachEncode = base64_decode($attachFile);
+    $header .= "MIME-Version: 1.0\r\n";//header部分での改行は\r\nで行う
+    $header .= "Content-Type: multipart/mixed; boundary=\"__PHPRECIPE__\"\r\n";//ここ重要！！！添付ファイルありの場合、Content-Type: multipart/mixedになり、
+    //boundaryで指定した文字列__PHPRECIPE__を区切り線として使う。--__PHPRECIPE__で始まり、--__PHPRECIPE__--で終わるように。
+    //$header .= "\r\n";この空の改行が悪さをしている。header内では無駄な改行しない。サンプルで紹介されていたページでは多分PHPのバージョンが古いので動作していたようだ。
     
-    $body .= "Content-type: image/jpeg; name=\"" . time() . "\"";
+    $body = "--__PHPRECIPE__\r\n";
+    $body .= "Content-Type: text/plain; charset=\"ISO-2022-JP\"\r\n";
+    $body .= "\r\n";
+    $body .= $_POST["body"] . "\r\n";
+    $body .= "--__PHPRECIPE__\r\n";
+    
+    //添付ファイルへの処理
+    $handle = fopen($save_file, 'r');//ファイルまたはURLをオープンにする。"r"は読み込みのみ。
+    $attachFile = fread($handle, filesize($save_file));//fread()でファイルをバイナリモードで読み込む。バイナリデータとは文字データ以外のデータ形式。
+    fclose($handle);//オープンされたファイルポインタをクローズする
+    $attachEncode = base64_encode($attachFile);//上記のfreadで画像が文字データとして読み込まれたものをbase64でエンコード。バイナリデータが生き残れるように設計されているようです。
+    
+    $body .= "Content-type: image/jpeg; name=\"" . time() . "\"\r\n";
     $body .= "Content-Transfer-Encoding: base64\r\n";
-    $body .= "Content-Disposition:attachment;filename=\"" . time() . "\"";
-    $body .= chunk_split($attachEncode);//文字列をより小さな部分に分割する
-    $body .= "--__PHPRECIPE__--";
+    $body .= "Content-Disposition:attachment;filename=\"" . time() . ".jpeg\"\r\n";//ここでファイル名と拡張子を指定。
+    $body .= "\r\n";
+    $body .= chunk_split($attachEncode) . "\r\n";//上記のbase64_encode()で文字データ化されたバイナリデータを、chunk_splitで出力変換（RFC 2045の規約）。文字列をより小さな部分に分割する。
+    $body .= "--__PHPRECIPE__--\r\n";
     
     //mb_send_mailで送信
     $r = mb_send_mail($to,$subject,$body,$header);//mb_send_mail(送信先,件名,本文,ヘッダ[from含む])
