@@ -101,9 +101,9 @@ if (isset($_POST["name"]) && isset($_POST["body"]) && isset($_POST["mail"])) {
     fclose($handle);//オープンされたファイルポインタをクローズする
     $attachEncode = base64_encode($attachFile);//上記のfreadで画像が文字データとして読み込まれたものをbase64でエンコード。バイナリデータが生き残れるように設計されているようです。
     
-    $body .= "Content-type: image/jpeg; name=\"" . time() . "\"\r\n";
+    $body .= "Content-type: image/jpeg; name=\"" . time() . ".jpeg\"\r\n";//ここにもファイル名と拡張子を指定。
     $body .= "Content-Transfer-Encoding: base64\r\n";
-    $body .= "Content-Disposition:attachment;filename=\"" . time() . ".jpeg\"\r\n";//ここでファイル名と拡張子を指定。
+    $body .= "Content-Disposition:attachment;filename=\"" . time() . ".jpeg\"\r\n";//ここでファイル名と拡張子を指定。拡張をつけないとファイルが開けない。
     $body .= "\r\n";
     $body .= chunk_split($attachEncode) . "\r\n";//上記のbase64_encode()で文字データ化されたバイナリデータを、chunk_splitで出力変換（RFC 2045の規約）。文字列をより小さな部分に分割する。
     $body .= "--__PHPRECIPE__--\r\n";

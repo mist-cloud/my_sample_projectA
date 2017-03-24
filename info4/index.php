@@ -1,70 +1,57 @@
 <?php
-mb_language("Japanese");//日本語でエンコーディング
-mb_internal_encoding("UTF-8");//PHPで内部文字をUTF-8でエンコーディング
-//ファイルの容量を制限
-$maxsize = 1024 * 1024 * 1;//1048576
-if (isset($_POST["subject"])) {
-    $to = mb_encode_mimeheader(mb_convert_encoding("吉田潤二","JIS","UTF8"))."<junji_yoshida@sunday-ja.com>";
-    $from = $_POST['mail'];
-    $subject = $_POST['subject'];
-    $mailMassage = $_POST['body'];
-    $dir = $_FILES['upfile']['tmp_name'];///////////////////////////////////////
-    $upfile = $_POST['upfile'];
-    $fileName = $dir.$upfile;
-    
-    $header = "From: $from\r\n";
-    $header .= "MIME-Version: 1.0\r\n";
-    $header .= "Content-Type: multipart/mixed; boundary=\"__PHPRECIPE__\"\r\n";
-    $header .= "\r\n";
-    
-    $body = "--__PHPRECIPE__\r\n";
-    $body .= "Content-Type: text/plain; charset=\"ISO-2022-JP\"\r\n";
-    $body .= "\r\n";
-    $body .= $mailMassage . "\r\n";
-    $body .= "--__PHPRECIPE__\r\n";
-    
-    // 添付ファイルの処理
-    $handle = fopen($fileName, 'r');//検証が必要
-    $attachFile = fread($handle, filesize($fileName));
-    fclose($handle);
-    $attachEncode = base64_encode($attachFile);
-    $body .= "Content-Type: image/jpeg; name=\"$upfile\"\r\n";//検証が必要
-    $body .= "Content-Transfer-Encoding: base64\r\n";
-    $body .= "Content-Disposition: attachment; filename=\"$upfile\"\r\n";
-    $body .= "\r\n";
-    $body .= chunk_split($attachEncode) . "\r\n";
-    $body .= "--__PHPRECIPE__--\r\n";
-    
-    //メールの送信と結果の判定をします。セーフモードがOnの場合は第5引数が使えません。
-    if (ini_get('safe_mode')) {
-        $success = mb_send_mail($to,$subject,$body, "From:" .$header);   
-    } else {
-        $success = mb_send_mail($to,$subject,$body, "From:" .$header, '-f' . $from);
+//ユーザーとパスワードの一覧
+$users = array (
+    "test1"=>"b444ac06613fc8d63795be9ad0beaf55011936ac",//test1をSHA1でハッシュ化、英数字は小文字に。
+    "test2"=>"109f4b3c50d7b0df729d299bc6f8e9ef9066971f",//test2を同じく
+    "test3"=>"3ebfa301dc59196f18593c45e519287a23297589"//test3を同じく
+);
+$script = $_SERVER["SCRIPT_NAME"];//このPHPのパス
+//セッションを開始する
+session_start();
+//ログインしているか？
+if (isset($_SESSION["login"])) { show_login_contents(); exit; }
+//ログインフォームからので入力があるか？
+if (isset($_POST["user"])) {//userに値が入っていれば
+    check_login();//関数check_login()を実行
+} else {//userに値が入っていなければ
+    show_login_form();//関数show_login_form()を実行
+}
+//ログインフォームを表示
+function show_login_form() {
+    global $script;//グローバル関数$scriptにアクセス
+    //ヒアドキュメントでフォームを記述
+    echo <<< __FORM__
+<div id="loginform">
+<form action="$script" method="POST">
+<label>ユーザー名</label><input type="text" name="user" />
+<label>パスワード</label><input type="text" name="pass" />
+<button type="submit">ログイン</button>
+</form>
+</div>
+__FORM__;
+}
+//ログインするかチェック
+function check_login() {
+    global $users, $script;//グローバル関数$users,$scriptにアクセス
+    //入力を検証する
+    if (empty($_POST["pass"])) {//passに値が入っていない場合
+        echo "パスワードが入力されていません。"; exit;
     }
-    if ($success) {
-        print('送信しました。');  
-    } else {
-        print('送信失敗');
+    if (empty($users[$_POST["user"]])) {//userに値が入っていない場合
+        echo "ユーザーが存在しないかパスワードが違います。"; exit;
     }
+    //パスワードが合致しているかチェック
+    $pass_correct = $users[$_POST["user"]];
+    if (sha1($_POST["pass"]) != $pass_correct) {
+        echo "ユーザーが存在しないかパスワードが違います。"; exit;
+    }
+    //ログインしたことをセッションに記憶
+    $_SESSION["login"] = array("user" => $_POST["user"]);
+    echo "<a href='$script'>ログインしました！</a>";
+}
+function show_login_contents() {
+    $user = $_SESSION["login"]["user"];
+    echo "<h1>こんにちは、{$user}さん！</h1>";
+    echo "<p>このページはログインした人しか見られません。</p>";
 }
 ?>
-
-<!DOCTYPE HTML>
-<html lang="jp">
-<head>
-    <meta charset="UTF-8">
-    <title>フォームに入力した情報とファイルをメールで送信する。</title>
-</head>
-<h1>フォームに入力した情報とファイルをメールで送信する。</h1>
-<body>
-    <form action="" method="post">
-        件名：<input type="text" name="subject" /><br />
-        本文：<input type="text" name="body" /><br />
-        mail：<input type="text" name="mail" /><br />
-        ファイル：<input type="hidden" name="MAXFILE_SIZE" value="<?php echo($maxsize) ?>" />
-        <input type="file"  name="upfile" />
-        <input type="submit" value="送信" />
-    </form>
-</body>
-</html>
-
